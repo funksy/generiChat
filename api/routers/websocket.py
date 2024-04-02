@@ -1,4 +1,14 @@
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends
+from typing import Annotated
+from fastapi import (
+    APIRouter,
+    WebSocket,
+    WebSocketDisconnect,
+    WebSocketException,
+    Depends,
+    Cookie,
+    status,
+)
+from authenticator import authenticator
 from queries.websocket import ConnectionManager
 
 
@@ -11,6 +21,7 @@ async def websocket_endpoint(
     username: str,
     manager: ConnectionManager = Depends(),
 ):
+    token = websocket.cookies.get("fastapi_token")
     await manager.connect(websocket, username)
     try:
         while True:

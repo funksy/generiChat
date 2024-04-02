@@ -1,8 +1,13 @@
-# volumes:
+volumes:
+    mongo-data:
+        external: true
+
 services:
     fastapi:
         environment:
             CORS_HOST: http://localhost:5173
+            DB_URL: mongodb://root:example@mongo:27017/
+            SIGNING_KEY: elbp36dem3opvjxm8rb3kdgd
         build:
             context: api
             dockerfile: Dockerfile.dev
@@ -23,3 +28,20 @@ services:
             VITE_API_HOST: http://localhost:8000
         ports:
             - "5173:5173"
+
+    mongo-express:
+        image: mongo-express
+        restart: always
+        ports:
+            - 8081:8081
+        environment:
+            ME_CONFIG_MONGODB_ADMINUSERNAME: root
+            ME_CONFIG_MONGODB_ADMINPASSWORD: example
+            ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+    mongo:
+        image: mongo:5
+        volumes:
+            - mongo-data:/data/db
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: example

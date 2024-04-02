@@ -32,12 +32,12 @@ class InvalidChatRoomError(ValueError):
 class MessageRepository(Queries):
     COLLECTION = "messages"
 
-    def __init__(
-        self, chatroom_repo: ChatroomRepository = Depends()
-    ):
+    def __init__(self, chatroom_repo: ChatroomRepository = Depends()):
         self.chatroom_repo = chatroom_repo
 
-    def create_message(self, new_message: MessageIn, username: str) -> MessageOut:
+    def create_message(
+        self, new_message: MessageIn, username: str
+    ) -> MessageOut:
         new_message = new_message.dict()
         if not self.chatroom_repo.get_chatroom(new_message["chatroom"]):
             raise InvalidChatRoomError

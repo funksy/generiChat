@@ -18,10 +18,11 @@ from queries.messages import (
 
 router = APIRouter()
 
+
 @router.post(
     "/chatrooms/{chatroom_name}/messages",
     response_model=MessageOut,
-    tags=["messages"]
+    tags=["messages"],
 )
 def create_message(
     new_message: MessageIn,
@@ -36,14 +37,15 @@ def create_message(
     except InvalidChatRoomError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid chatroom name"
+            detail="Invalid chatroom name",
         )
     return new_message
+
 
 @router.get(
     "/chatrooms/{chatroom_name}/messages",
     response_model=MessageListOut,
-    tags=["messages"]
+    tags=["messages"],
 )
 def get_chatroom_messages(
     chatroom_name: str,
@@ -57,6 +59,6 @@ def get_chatroom_messages(
     except InvalidChatRoomError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid chatroom name"
+            detail="Invalid chatroom name",
         )
     return messages

@@ -27,7 +27,9 @@ class DuplicateChatroomError(ValueError):
 class ChatroomRepository(Queries):
     COLLECTION = "chatrooms"
 
-    def create_chatroom(self, new_chatroom: ChatroomIn, chatroom_owner: str) -> ChatroomOut:
+    def create_chatroom(
+        self, new_chatroom: ChatroomIn, chatroom_owner: str
+    ) -> ChatroomOut:
         new_chatroom = new_chatroom.dict()
         new_chatroom["owner"] = chatroom_owner
         new_chatroom["chatroom_name"] = new_chatroom["chatroom_name"].lower()
